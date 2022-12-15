@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
+import java.util.*;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -25,6 +26,8 @@ public class AddUserPanel extends ControlPanel {
 
     private JButton addUserButton;
     private JButton addGroupButton;
+    private JButton addVerButton;
+    private JButton addUpdateButton;
     private JTextField userId;
     private JTextField groupId;
 
@@ -44,6 +47,10 @@ public class AddUserPanel extends ControlPanel {
         addComponent(this, addUserButton, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         addComponent(this, groupId, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         addComponent(this, addGroupButton, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        addComponent(this, addVerButton, 0, 2, 2, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        addComponent(this, addUpdateButton, 0, 3, 2, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        
+
     }
 
     private void initializeComponents() {
@@ -55,6 +62,12 @@ public class AddUserPanel extends ControlPanel {
 
         addGroupButton = new JButton("Add Group");
         initializeAddGroupButtonActionListener();
+
+        addVerButton = new JButton("Verify Users/Groups");
+        initializeAddVerButtonActionListener();
+
+        addUpdateButton = new JButton("Check Last Updated User");
+        initializeAddUpdateButtonActionListener();
     }
 
     // Action listen methods
@@ -98,6 +111,58 @@ public class AddUserPanel extends ControlPanel {
             }
         });
     }
+
+    private void initializeAddVerButtonActionListener() {
+        addVerButton.addActionListener(new ActionListener() {
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            Map<String, Observer> temp = new HashMap<String, Observer>(allUsers);
+            Set<String> values = new HashSet<>();
+            temp.remove("Root");
+            boolean message = true;
+
+            for (Map.Entry<String,Observer> entry : temp.entrySet()) {
+                String value = entry.getKey();
+                if (values.contains(value) && temp.size() > 1 || value.contains(" ")) {
+                    message = false;
+                }
+                else {
+                    values.add(value);
+                }
+            }
+            if(message) {
+                InfoDialogBox dialogBox = new InfoDialogBox("User Verification",
+                            "User verification succeeded \n No duplicate users or user ID with spaces exist!",
+                            JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                InfoDialogBox dialogBox = new InfoDialogBox("User Verification",
+                            "User verification failed \n A duplicate ID or an ID with a space exists!  ",
+                            JOptionPane.ERROR_MESSAGE);
+            }
+
+            }
+        });
+    }
+
+    private void initializeAddUpdateButtonActionListener() {
+        addVerButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Map<String, Observer> temp = new HashMap<String, Observer>(allUsers);
+
+
+
+            }
+
+
+        });
+    }
+
 
 }
 

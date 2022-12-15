@@ -10,6 +10,8 @@ public abstract class User extends DefaultMutableTreeNode implements Observer {
 
     private String userID;
     private int messageCount;
+    private long creationTime;
+    private long lastUpdateTime;
 
     public abstract boolean contains(String id);
     public abstract int getSingleUserCount();
@@ -19,6 +21,8 @@ public abstract class User extends DefaultMutableTreeNode implements Observer {
         super(id);
         this.userID = id;
         this.setMessageCount(0);
+        this.creationTime = setCreationTime();
+        this.lastUpdateTime = 0;
     }
 
     // Return this user's user ID
@@ -38,6 +42,26 @@ public abstract class User extends DefaultMutableTreeNode implements Observer {
     public void setMessageCount(int count) {
         this.messageCount = count;
     }
+    // Returns the current time in milliseconds
+    public long getCreationTime() {
+        return creationTime;
+    }
+
+    // Returns the current time in milliseconds
+    public long setCreationTime() {
+        return System.currentTimeMillis();
+    }
+
+    public void setLastUpdateTime() {
+        this.lastUpdateTime = System.currentTimeMillis();
+    }
+
+    public long getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+
+
 
     // Accept method for Visitors as part of the Visitor design pattern
 

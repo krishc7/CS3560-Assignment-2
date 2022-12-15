@@ -13,10 +13,12 @@ import visitor.Visitor;
 public class GroupUser extends User {
 
     private Map<String,User> groupUsers;
+    long creationTime;
 
     public GroupUser(String id) {
         super(id);
         groupUsers = new HashMap<String,User>();
+        this.creationTime = getCreationTime();
     }
 
     public Map<String,User> getGroupUsers() {
@@ -110,5 +112,11 @@ public class GroupUser extends User {
         }
         return x;
     }
+
+    // Returns the current time in milliseconds
+    public long getCreationTime() {
+        return System.currentTimeMillis();
+    }
+
 
 }

@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import javax.swing.*;
@@ -26,6 +29,7 @@ public class UserViewPanel extends ControlPanel {
     private JTextArea tweetMessageTextArea;
     private JTextArea currentFollowingTextArea;
     private JTextArea newsFeedTextArea;
+    private JTextArea timeTextArea;
 
     private JScrollPane tweetMessageScrollPane;
     private JScrollPane currentFollowingScrollPane;
@@ -62,6 +66,7 @@ public class UserViewPanel extends ControlPanel {
         addComponent(frame, tweetMessageScrollPane, 0, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         addComponent(frame, postTweetButton, 1, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         addComponent(frame, newsFeedScrollPane, 0, 3, 2, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        addComponent(frame, timeTextArea, 0, 4, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
     }
 
     private void initializeComponents() {
@@ -91,6 +96,10 @@ public class UserViewPanel extends ControlPanel {
         formatTextArea(newsFeedTextArea);
         newsFeedScrollPane = new JScrollPane(newsFeedTextArea);
         newsFeedScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        timeTextArea = new JTextArea("User Creation Time:");
+        formatTextArea(timeTextArea);
+        updateTimeTextArea();
 
         // current following and news feed lists reflect most recent state of UserViewPanel
         updateCurrentFollowingTextArea();
@@ -122,6 +131,21 @@ public class UserViewPanel extends ControlPanel {
         });
     }
 
+    private void updateTimeTextArea() {
+        long newTime = ((SingleUser) user).getCreationTime();
+
+        long updTime = ((SingleUser) user).getLastUpdateTime();
+        //creating Date from millisecond
+       Date currentDate = new Date(newTime);
+
+       Date updateTime = new Date(updTime);
+    
+       DateFormat df = new SimpleDateFormat("HH:mm:ss");
+     
+        timeTextArea.setText("Creation time: " + df.format(currentDate) +
+        "\n\nLast update time: " + df.format(updateTime));
+    }
+
     /**
      * Updates the news feed display.
      */
@@ -135,6 +159,7 @@ public class UserViewPanel extends ControlPanel {
         // show most recent message at top of news feed
         newsFeedTextArea.setText(list);
         newsFeedTextArea.setCaretPosition(0);
+        ((SingleUser) user).setLastUpdateTime();
     }
 
     /**

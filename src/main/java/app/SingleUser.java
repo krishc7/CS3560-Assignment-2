@@ -20,6 +20,7 @@ public class SingleUser extends User implements Subject {
 
     private String latestMessage;
     private int positiveMessageCount;
+    private long creationTime;
 
     public SingleUser(String id) {
         super(id);
@@ -27,6 +28,7 @@ public class SingleUser extends User implements Subject {
         followers.put(this.getID(), this);
         following = new HashMap<String, Subject>();
         newsFeed = new ArrayList<String>();
+        this.creationTime = setCreationTime();
     }
 
     // Returns map of users which follow this user
